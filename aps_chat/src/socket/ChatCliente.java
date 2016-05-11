@@ -36,7 +36,6 @@ public class ChatCliente extends JFrame {
 			}catch(Exception e){}
 		}
 		
-		
 	}
 	
 	public ChatCliente(String nome){
