@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -57,6 +59,34 @@ public class ChatCliente extends JFrame {
 			}
 			
 		});
+		
+		textoParaEnviar.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					escritor.println(nome + " : " +textoParaEnviar.getText());
+					escritor.flush();
+					textoParaEnviar.setText("");
+					textoParaEnviar.requestFocus();
+				}
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});;
+		
+		
 		Container envio = new JPanel();
 		envio.setLayout(new BorderLayout());
 		envio.add(BorderLayout.CENTER, textoParaEnviar);
@@ -76,6 +106,7 @@ public class ChatCliente extends JFrame {
 		this.setSize(500,500);
 		this.setVisible(true);
 	}
+	
 	
 	private void configurarRede(){
 		try{

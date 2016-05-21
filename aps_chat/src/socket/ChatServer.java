@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class ChatServer {
 
-	List<PrintWriter> escritores = new ArrayList<>();
+	List<PrintWriter> conexoes = new ArrayList<>();
 	
 	public ChatServer(){
 		ServerSocket server;
@@ -19,8 +19,8 @@ public class ChatServer {
 			while(true){
 				Socket socket = server.accept();
 				new Thread(new EscutaCliente(socket)).start();
-				PrintWriter p = new PrintWriter(socket.getOutputStream());
-				escritores.add(p);
+				PrintWriter canalDeComunicao = new PrintWriter(socket.getOutputStream());
+				conexoes.add(canalDeComunicao);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -28,10 +28,10 @@ public class ChatServer {
 	}
 
 	private void encaminhaParaTodos(String texto){
-		for(PrintWriter w : escritores){
+		for(PrintWriter canalDeComunicao : conexoes){
 			try{
-				w.println(texto);
-				w.flush();
+				canalDeComunicao.println(texto);
+				canalDeComunicao.flush();
 			}catch(Exception e){}
 		}
 	}
@@ -40,6 +40,7 @@ public class ChatServer {
 		public EscutaCliente(Socket socket){
 			try {
 				leitor = new Scanner(socket.getInputStream());
+				System.out.println(socket.hashCode());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
