@@ -8,14 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class ChatServer {
 
 	List<PrintWriter> conexoes = new ArrayList<>();
 	
 	public ChatServer(){
+		
+		int porta = 0;
 		ServerSocket server;
+		
+		do{
+			 String resp = JOptionPane.showInputDialog(null, "Porta > 5000", "Numero da porta do servidor",JOptionPane.PLAIN_MESSAGE);
+			 
+			 if(resp != null)
+				 porta = Integer.parseInt(resp);
+			
+		}while(porta < 5000 || porta > 65535);
+		
+		
 		try {
-			server = new ServerSocket(5000);
+			server = new ServerSocket(porta);
 			while(true){
 				Socket socket = server.accept();
 				new Thread(new EscutaCliente(socket)).start();

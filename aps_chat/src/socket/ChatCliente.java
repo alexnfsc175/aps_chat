@@ -23,6 +23,8 @@ public class ChatCliente extends JFrame {
 	PrintWriter escritor;
 	JTextField textoParaEnviar;
 	String nome;
+	String ip;
+	int porta;
 	JTextArea textoRecebido;
 	Scanner leitor;
 	
@@ -40,9 +42,11 @@ public class ChatCliente extends JFrame {
 		
 	}
 	
-	public ChatCliente(String nome){
+	public ChatCliente(String nome, String ip, int porta){
 		super("Chat : "+nome);
 		this.nome = nome;
+		this.ip = ip;
+		this.porta = porta;
 		
 		Font fonte = new Font("serif", Font.PLAIN, 26);
 		textoParaEnviar = new JTextField();
@@ -110,7 +114,7 @@ public class ChatCliente extends JFrame {
 	
 	private void configurarRede(){
 		try{
-			this.socket = new Socket("127.0.0.1", 5000);
+			this.socket = new Socket(ip, porta);
 			this.escritor = new PrintWriter(socket.getOutputStream());
 			this.leitor = new Scanner(socket.getInputStream());
 			new Thread(new EscutaServidor()).start();
@@ -119,10 +123,4 @@ public class ChatCliente extends JFrame {
 		}
 	}
 	
-	public static void main(String[] args){
-		new ChatCliente("Alex");
-		new ChatCliente("Caio");
-		new ChatCliente("Welington");
-	}
-
 }
